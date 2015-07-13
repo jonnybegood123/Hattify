@@ -193,11 +193,10 @@ public class MainActivity extends ActionBarActivity {
                             hat = BitmapFactory.decodeResource(getResources(), resID);
 
                             Matrix matrix = new Matrix();
-                            float scaleWidth = (float)eyeDistance/(hat.getWidth()/2);
-                            float scaleHeight = (float)eyeDistance/(hat.getHeight()/2);
+                            float scaleWidth = (float)eyeDistance/(float)(hat.getWidth()/2.8);
+                            float scaleHeight = (float)eyeDistance/(float)(hat.getHeight()/2.8);
                             matrix.postScale(scaleWidth, scaleHeight);
-                            matrix.postTranslate(midPoint.x - eyeDistance, midPoint.y - (int)(eyeDistance*2.8));
-                            System.out.println(eyeDistance);
+                            matrix.postTranslate(midPoint.x - (eyeDistance + (eyeDistance / 2)), midPoint.y - (int) (eyeDistance * 3.5));
                             canvas.drawBitmap(hat, matrix, null);
                         }
 
@@ -287,11 +286,10 @@ public class MainActivity extends ActionBarActivity {
                                 hat = BitmapFactory.decodeResource(getResources(), resID);
 
                                 Matrix matrix = new Matrix();
-                                float scaleWidth = (float)eyeDistance/(hat.getWidth()/2);
-                                float scaleHeight = (float)eyeDistance/(hat.getHeight()/2);
+                                float scaleWidth = (float)eyeDistance/(float)(hat.getWidth()/2.8);
+                                float scaleHeight = (float)eyeDistance/(float)(hat.getHeight()/2.8);
                                 matrix.postScale(scaleWidth, scaleHeight);
-                                matrix.postTranslate(midPoint.x - eyeDistance, midPoint.y - (int)(eyeDistance*2.8));
-                                System.out.println(eyeDistance);
+                                matrix.postTranslate(midPoint.x - (eyeDistance + (eyeDistance / 2)), midPoint.y - (int) (eyeDistance * 3.5));
                                 canvas.drawBitmap(hat, matrix, null);
                             }
 
@@ -362,11 +360,8 @@ public class MainActivity extends ActionBarActivity {
                             FaceDetector faceDetector = new FaceDetector(width, height, 20);
                             int NUMBER_OF_FACE_DETECTED = faceDetector.findFaces(faceBitmap, detectedFaces);
 
-                            System.out.println(NUMBER_OF_FACE_DETECTED);
-
                             Canvas canvas = new Canvas(faceBitmap);
                             canvas.drawBitmap(faceBitmap, 0, 0, null);
-
                             Bitmap hat;
                             for (int count = 0; count < NUMBER_OF_FACE_DETECTED; count++) {
                                 Face face = detectedFaces[count];
@@ -383,11 +378,10 @@ public class MainActivity extends ActionBarActivity {
                                 hat = BitmapFactory.decodeResource(getResources(), resID);
 
                                 Matrix matrix = new Matrix();
-                                float scaleWidth = (float)eyeDistance/(hat.getWidth()/2);
-                                float scaleHeight = (float)eyeDistance/(hat.getHeight()/2);
+                                float scaleWidth = (float)eyeDistance/(float)(hat.getWidth()/2.8);
+                                float scaleHeight = (float)eyeDistance/(float)(hat.getHeight()/2.8);
                                 matrix.postScale(scaleWidth, scaleHeight);
-                                matrix.postTranslate(midPoint.x - eyeDistance, midPoint.y - (int)(eyeDistance*2.8));
-                                System.out.println(eyeDistance);
+                                matrix.postTranslate(midPoint.x - (eyeDistance + (eyeDistance/2)), midPoint.y - (int)(eyeDistance*3.5));
                                 canvas.drawBitmap(hat, matrix, null);
                             }
 
