@@ -152,40 +152,7 @@ public class MainActivity extends ActionBarActivity {
                         Bitmap faceBitmap = bitmap.copy(Bitmap.Config.RGB_565, true);
                         bitmap.recycle();
 
-                        int width = faceBitmap.getWidth();
-                        int height = faceBitmap.getHeight();
-
-                        Face[] detectedFaces = new FaceDetector.Face[20];
-                        FaceDetector faceDetector = new FaceDetector(width, height, 20);
-                        int NUMBER_OF_FACE_DETECTED = faceDetector.findFaces(faceBitmap, detectedFaces);
-
-                        System.out.println(NUMBER_OF_FACE_DETECTED);
-
-                        Canvas canvas = new Canvas(faceBitmap);
-                        canvas.drawBitmap(faceBitmap, 0, 0, null);
-
-                        Bitmap hat;
-                        for (int count = 0; count < NUMBER_OF_FACE_DETECTED; count++) {
-                            Face face = detectedFaces[count];
-                            PointF midPoint = new PointF();
-                            face.getMidPoint(midPoint);
-                            float eyeDistance = face.eyesDistance();
-                            //canvas.drawRect(midPoint.x - eyeDistance, midPoint.y - eyeDistance, midPoint.x + eyeDistance, midPoint.y + eyeDistance, myPaint);
-
-                            //generate random hat to be placed
-                            Random rand = new Random();
-                            int randomNumber = rand.nextInt((15 - 0) + 1) + 0;
-                            String stringVar = "hat" + randomNumber;
-                            int resID = getResources().getIdentifier(stringVar, "drawable", MainActivity.this.getPackageName());
-                            hat = BitmapFactory.decodeResource(getResources(), resID);
-
-                            Matrix matrix = new Matrix();
-                            float scaleWidth = (float)eyeDistance/(float)(hat.getWidth()/2.8);
-                            float scaleHeight = (float)eyeDistance/(float)(hat.getHeight()/2.8);
-                            matrix.postScale(scaleWidth, scaleHeight);
-                            matrix.postTranslate(midPoint.x - (eyeDistance + (eyeDistance / 2)), midPoint.y - (int) (eyeDistance * 3.5));
-                            canvas.drawBitmap(hat, matrix, null);
-                        }
+                        faceBitmap = addHats(faceBitmap);
 
                         Intent i = new Intent(getBaseContext(), PictureActivity.class);
                         //assigns to global bitmap variable then goes to intent
@@ -218,40 +185,7 @@ public class MainActivity extends ActionBarActivity {
                             Bitmap faceBitmap = bitmap.copy(Bitmap.Config.RGB_565, true);
                             bitmap.recycle();
 
-                            int width = faceBitmap.getWidth();
-                            int height = faceBitmap.getHeight();
-
-                            Face[] detectedFaces = new FaceDetector.Face[20];
-                            FaceDetector faceDetector = new FaceDetector(width, height, 20);
-                            int NUMBER_OF_FACE_DETECTED = faceDetector.findFaces(faceBitmap, detectedFaces);
-
-                            System.out.println(NUMBER_OF_FACE_DETECTED);
-
-                            Canvas canvas = new Canvas(faceBitmap);
-                            canvas.drawBitmap(faceBitmap, 0, 0, null);
-
-                            Bitmap hat;
-                            for (int count = 0; count < NUMBER_OF_FACE_DETECTED; count++) {
-                                Face face = detectedFaces[count];
-                                PointF midPoint = new PointF();
-                                face.getMidPoint(midPoint);
-                                float eyeDistance = face.eyesDistance();
-                                //canvas.drawRect(midPoint.x - eyeDistance, midPoint.y - eyeDistance, midPoint.x + eyeDistance, midPoint.y + eyeDistance, myPaint);
-
-                                //generate random hat to be placed
-                                Random rand = new Random();
-                                int randomNumber = rand.nextInt((15 - 0) + 1) + 0;
-                                String stringVar = "hat" + randomNumber;
-                                int resID = getResources().getIdentifier(stringVar, "drawable", MainActivity.this.getPackageName());
-                                hat = BitmapFactory.decodeResource(getResources(), resID);
-
-                                Matrix matrix = new Matrix();
-                                float scaleWidth = (float)eyeDistance/(float)(hat.getWidth()/2.8);
-                                float scaleHeight = (float)eyeDistance/(float)(hat.getHeight()/2.8);
-                                matrix.postScale(scaleWidth, scaleHeight);
-                                matrix.postTranslate(midPoint.x - (eyeDistance + (eyeDistance / 2)), midPoint.y - (int) (eyeDistance * 3.5));
-                                canvas.drawBitmap(hat, matrix, null);
-                            }
+                            faceBitmap = addHats(faceBitmap);
 
                             Intent i = new Intent(getBaseContext(), PictureActivity.class);
                             //assigns to global bitmap variable then goes to intent
@@ -286,37 +220,7 @@ public class MainActivity extends ActionBarActivity {
                             Bitmap faceBitmap = bitmap.copy(Bitmap.Config.RGB_565, true);
                             bitmap.recycle();
 
-                            int width = faceBitmap.getWidth();
-                            int height = faceBitmap.getHeight();
-
-                            Face[] detectedFaces = new FaceDetector.Face[20];
-                            FaceDetector faceDetector = new FaceDetector(width, height, 20);
-                            int NUMBER_OF_FACE_DETECTED = faceDetector.findFaces(faceBitmap, detectedFaces);
-
-                            Canvas canvas = new Canvas(faceBitmap);
-                            canvas.drawBitmap(faceBitmap, 0, 0, null);
-                            Bitmap hat;
-                            for (int count = 0; count < NUMBER_OF_FACE_DETECTED; count++) {
-                                Face face = detectedFaces[count];
-                                PointF midPoint = new PointF();
-                                face.getMidPoint(midPoint);
-                                float eyeDistance = face.eyesDistance();
-                                //canvas.drawRect(midPoint.x - eyeDistance, midPoint.y - eyeDistance, midPoint.x + eyeDistance, midPoint.y + eyeDistance, myPaint);
-
-                                //generate random hat to be placed
-                                Random rand = new Random();
-                                int randomNumber = rand.nextInt((15 - 0) + 1) + 0;
-                                String stringVar = "hat" + randomNumber;
-                                int resID = getResources().getIdentifier(stringVar, "drawable", MainActivity.this.getPackageName());
-                                hat = BitmapFactory.decodeResource(getResources(), resID);
-
-                                Matrix matrix = new Matrix();
-                                float scaleWidth = (float)eyeDistance/(float)(hat.getWidth()/2.8);
-                                float scaleHeight = (float)eyeDistance/(float)(hat.getHeight()/2.8);
-                                matrix.postScale(scaleWidth, scaleHeight);
-                                matrix.postTranslate(midPoint.x - (eyeDistance + (eyeDistance/2)), midPoint.y - (int)(eyeDistance*3.5));
-                                canvas.drawBitmap(hat, matrix, null);
-                            }
+                            faceBitmap = addHats(faceBitmap);
 
                             Intent i = new Intent(getBaseContext(), PictureActivity.class);
                             //assigns to global bitmap variable then goes to intent
@@ -361,6 +265,44 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return originalBitmap;
+    }
+
+    private Bitmap addHats(Bitmap faceBitmap) {
+        int width = faceBitmap.getWidth();
+        int height = faceBitmap.getHeight();
+
+        Face[] detectedFaces = new FaceDetector.Face[20];
+        FaceDetector faceDetector = new FaceDetector(width, height, 20);
+        int NUMBER_OF_FACE_DETECTED = faceDetector.findFaces(faceBitmap, detectedFaces);
+
+        System.out.println(NUMBER_OF_FACE_DETECTED);
+
+        Canvas canvas = new Canvas(faceBitmap);
+        canvas.drawBitmap(faceBitmap, 0, 0, null);
+
+        Bitmap hat;
+        for (int count = 0; count < NUMBER_OF_FACE_DETECTED; count++) {
+            Face face = detectedFaces[count];
+            PointF midPoint = new PointF();
+            face.getMidPoint(midPoint);
+            float eyeDistance = face.eyesDistance();
+            //canvas.drawRect(midPoint.x - eyeDistance, midPoint.y - eyeDistance, midPoint.x + eyeDistance, midPoint.y + eyeDistance, myPaint);
+
+            //generate random hat to be placed
+            Random rand = new Random();
+            int randomNumber = rand.nextInt((15 - 0) + 1) + 0;
+            String stringVar = "hat" + randomNumber;
+            int resID = getResources().getIdentifier(stringVar, "drawable", MainActivity.this.getPackageName());
+            hat = BitmapFactory.decodeResource(getResources(), resID);
+
+            Matrix matrix = new Matrix();
+            float scaleWidth = (float) eyeDistance / (float) (hat.getWidth() / 2.8);
+            float scaleHeight = (float) eyeDistance / (float) (hat.getHeight() / 2.8);
+            matrix.postScale(scaleWidth, scaleHeight);
+            matrix.postTranslate(midPoint.x - (eyeDistance + (eyeDistance / 2)), midPoint.y - (int) (eyeDistance * 3.5));
+            canvas.drawBitmap(hat, matrix, null);
+        }
+        return faceBitmap;
     }
 
     private File getTempFile(Context context) {
