@@ -14,6 +14,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.ExifInterface;
 import android.media.MediaScannerConnection;
@@ -29,6 +30,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
 import java.io.FileDescriptor;
@@ -47,6 +49,8 @@ import android.media.FaceDetector.Face;
 public class MainActivity extends ActionBarActivity {
 
     private Button cameraButton;
+    private Button galleryButton;
+    private TextView titleText;
     private final int REQUEST_IMAGE_CAPTURE = 1;
     private final int SELECT_PICTURE = 2;
     private String selectedImagePath;
@@ -56,34 +60,48 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         //hides various bars
         getSupportActionBar().hide();
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         setContentView(R.layout.activity_main);
+
+        //references
         cameraButton = (Button) findViewById(R.id.cameraButton);
+        galleryButton = (Button) findViewById(R.id.galleryButton);
+        titleText = (TextView) findViewById(R.id.titleText);
 
-        //animation
-        cameraButton.setBackgroundResource(R.drawable.camera_animation);
-        AnimationDrawable animation = (AnimationDrawable) cameraButton.getBackground();
-        animation.start();
+        //typeface
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "SEASRN__.ttf");
+        titleText.setTypeface(typeface);
 
+        //on touch listeners for buttons
         cameraButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        cameraButton.setBackgroundResource(R.drawable.camerabutton_pressed);
                         break;
                     }
                     case MotionEvent.ACTION_UP: {
-                        buttonLogic();
-                        cameraButton.setBackgroundResource(R.drawable.camera_animation);
-                        AnimationDrawable animation = (AnimationDrawable) cameraButton.getBackground();
-                        animation.start();
+                        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile(getApplicationContext())));
+                        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                        MainActivity.this.overridePendingTransition(android.R.anim.slide_out_right, android.R.anim.slide_in_left);
+                    }
+                }
+                return true;
+            }
+        });
+
+        galleryButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
                     }
                 }
                 return true;
@@ -113,37 +131,6 @@ public class MainActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    public void buttonLogic() {
-        openDialog();
-    }
-
-    public void openDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle("Picture Options")
-                .setMessage("Would you like to take a new picture or use an already existing one?")
-                        //gallery click
-                .setPositiveButton("GALLERY", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent();
-                        intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-                    }})
-                        //camera click
-                .setNegativeButton("CAMERA", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile(getApplicationContext())));
-                        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-                        MainActivity.this.overridePendingTransition(android.R.anim.slide_out_right, android.R.anim.slide_in_left);
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-    }
-
-
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -200,38 +187,11 @@ public class MainActivity extends ActionBarActivity {
                             canvas.drawBitmap(hat, matrix, null);
                         }
 
-                        try {
-
-                            String path2 = Environment.getExternalStorageDirectory()
-                                    .toString();
-                            File newFolder = new File(path2 + "HattifiedPics");
-                            newFolder.mkdirs();
-                            OutputStream fOut = null;
-
-                            //get timestamp of picture taken
-                            SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
-                            String timestamp = s.format(new Date());
-
-                            //save image
-                            File file2 = new File(path2, "/HattifiedPics/" + timestamp + ".png");
-                            fOut = new FileOutputStream(file2);
-                            faceBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-                            fOut.flush();
-                            fOut.close();
-
-                            //refresh galleries and photo apps
-                            MediaScannerConnection.scanFile(MainActivity.this, new String[]{file2.getPath()}, new String[]{"image/jpeg"}, null);
-
-                            //final logic for saving picture
-                            Toast.makeText(getApplicationContext(),
-                                    "Your hattified picture has been saved!", Toast.LENGTH_LONG)
-                                    .show();
-
-                        } catch (Exception e) {
-                            Toast.makeText(
-                                    getApplicationContext(),
-                                    "Problem to Save the File", Toast.LENGTH_LONG).show();
-                        }
+                        Intent i = new Intent(getBaseContext(), PictureActivity.class);
+                        //assigns to global bitmap variable then goes to intent
+                        GlobalClass.bitmap = faceBitmap;
+                        startActivity(i);
+                        finish();
 
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -293,38 +253,11 @@ public class MainActivity extends ActionBarActivity {
                                 canvas.drawBitmap(hat, matrix, null);
                             }
 
-                            try {
-
-                                String path2 = Environment.getExternalStorageDirectory()
-                                        .toString();
-                                File newFolder = new File(path2 + "/HattifiedPics");
-                                newFolder.mkdirs();
-                                OutputStream fOut = null;
-
-                                //get timestamp of picture taken
-                                SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
-                                String timestamp = s.format(new Date());
-
-                                //save image
-                                File file2 = new File(path2, "/HattifiedPics/" + timestamp + ".png");
-                                fOut = new FileOutputStream(file2);
-                                faceBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-                                fOut.flush();
-                                fOut.close();
-
-                                //refresh galleries and photo apps
-                                MediaScannerConnection.scanFile(MainActivity.this, new String[]{file2.getPath()}, new String[]{"image/jpeg"}, null);
-
-                                //final logic for saving picture
-                                Toast.makeText(getApplicationContext(),
-                                        "Your hattified picture has been saved!", Toast.LENGTH_LONG)
-                                        .show();
-
-                            } catch (Exception e) {
-                                Toast.makeText(
-                                        getApplicationContext(),
-                                        "Problem to Save the File", Toast.LENGTH_LONG).show();
-                            }
+                            Intent i = new Intent(getBaseContext(), PictureActivity.class);
+                            //assigns to global bitmap variable then goes to intent
+                            GlobalClass.bitmap = faceBitmap;
+                            startActivity(i);
+                            finish();
 
                         }
                         catch (FileNotFoundException e) {
@@ -385,39 +318,11 @@ public class MainActivity extends ActionBarActivity {
                                 canvas.drawBitmap(hat, matrix, null);
                             }
 
-                            try {
-
-                                String path2 = Environment.getExternalStorageDirectory()
-                                        .toString();
-                                File newFolder = new File(path2 + "/HattifiedPics");
-                                newFolder.mkdirs();
-                                OutputStream fOut = null;
-
-                                //get timestamp of picture taken
-                                SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
-                                String timestamp = s.format(new Date());
-
-                                //save image
-                                File file2 = new File(path2, "/HattifiedPics/" + timestamp + ".png");
-                                fOut = new FileOutputStream(file2);
-                                faceBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-                                fOut.flush();
-                                fOut.close();
-
-                                //refresh galleries and photo apps
-                                MediaScannerConnection.scanFile(MainActivity.this, new String[]{file2.getPath()}, new String[]{"image/jpeg"}, null);
-
-                                //final logic for saving picture
-                                Toast.makeText(getApplicationContext(),
-                                        "Your hattified picture has been saved!", Toast.LENGTH_LONG)
-                                        .show();
-
-                            } catch (Exception e) {
-                                Toast.makeText(
-                                        getApplicationContext(),
-                                        "Problem to Save the File", Toast.LENGTH_LONG).show();
-                                System.out.println(e);
-                            }
+                            Intent i = new Intent(getBaseContext(), PictureActivity.class);
+                            //assigns to global bitmap variable then goes to intent
+                            GlobalClass.bitmap = faceBitmap;
+                            startActivity(i);
+                            finish();
 
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();

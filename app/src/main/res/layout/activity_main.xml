@@ -1,28 +1,79 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffcbd8fc"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
-    android:background="#fffbfce5"
-    android:id="@+id/mainLayout">
-
-    <Button
-        android:layout_width="356.81dp"
-        android:layout_height="210.435dp"
-        android:id="@+id/cameraButton"
-        android:background="@drawable/camerabutton1"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HATTIFY"
-        android:id="@+id/titleText"
-        android:textSize="50dp"
-        android:layout_above="@+id/cameraButton"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="38dp" />
+        android:text="HATTIFY"
+        android:textSize="50dp" />
+
+    <ImageView
+        android:id="@+id/mainImageView"
+        android:layout_width="225dp"
+        android:layout_height="225dp"
+        android:layout_below="@+id/titleText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/hat6" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/titleText"
+        android:layout_marginTop="13dp"
+        android:background="#000000" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/cameraButton"
+        android:layout_alignLeft="@+id/cameraButton"
+        android:layout_alignStart="@+id/cameraButton"
+        android:layout_marginBottom="27dp"
+        android:background="#000000" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="200dp"
+        android:layout_alignTop="@+id/view2"
+        android:layout_centerHorizontal="true"
+        android:background="#000000"
+        android:id="@+id/view3" />
+
+    <Button
+        android:id="@+id/cameraButton"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="18dp"
+        android:background="@drawable/camera"
+        android:layout_toLeftOf="@+id/view3"
+        android:layout_toStartOf="@+id/view3" />
+
+    <Button
+        android:id="@+id/galleryButton"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/cameraButton"
+        android:background="@drawable/gallery"
+        android:layout_toEndOf="@+id/view3"
+        android:layout_toRightOf="@+id/view3" />
+
 </RelativeLayout>
