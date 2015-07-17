@@ -9,71 +9,47 @@
 
     <TextView
         android:id="@+id/titleText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:text="HATTIFY"
-        android:textSize="50dp" />
+        android:textSize="50dp"
+        android:gravity="center"
+        android:layout_marginTop="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#ff0ec3ed" />
 
     <ImageView
         android:id="@+id/mainImageView"
         android:layout_width="225dp"
         android:layout_height="225dp"
-        android:layout_below="@+id/titleText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/hat6" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/titleText"
-        android:layout_marginTop="13dp"
-        android:background="#000000" />
-
-    <View
-        android:id="@+id/view2"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
         android:layout_above="@+id/cameraButton"
-        android:layout_alignLeft="@+id/cameraButton"
-        android:layout_alignStart="@+id/cameraButton"
-        android:layout_marginBottom="27dp"
-        android:background="#000000" />
-
-    <View
-        android:layout_width="1dp"
-        android:layout_height="200dp"
-        android:layout_alignTop="@+id/view2"
         android:layout_centerHorizontal="true"
-        android:background="#000000"
-        android:id="@+id/view3" />
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/hat6" />
 
     <Button
         android:id="@+id/cameraButton"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="#ff0ec3ed"
+        android:layout_above="@+id/galleryButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="18dp"
-        android:background="@drawable/camera"
-        android:layout_toLeftOf="@+id/view3"
-        android:layout_toStartOf="@+id/view3" />
+        android:text="CAMERA"
+        android:textSize="25dp" />
 
     <Button
         android:id="@+id/galleryButton"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/cameraButton"
-        android:background="@drawable/gallery"
-        android:layout_toEndOf="@+id/view3"
-        android:layout_toRightOf="@+id/view3" />
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="#ffedc122"
+        android:layout_marginBottom="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="GALLERY"
+        android:textSize="25dp" />
 
 </RelativeLayout>
